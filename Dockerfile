@@ -1,5 +1,7 @@
 FROM debian:buster
 
+COPY . /rmats_build/rmats-turbo
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
        ca-certificates \
@@ -19,10 +21,7 @@ RUN apt-get update \
        zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
     # Use a build dir to be removed after artifacts are extracted
-    && mkdir /rmats_build \
-    && cd /rmats_build \
-    && git clone https://github.com/Xinglab/rmats-turbo.git \
-    && cd rmats-turbo \
+    && cd /rmats_build/rmats-turbo \
     # The build will source setup_environment.sh which will source ~/.bashrc.
     # Skip that by truncating setup_environment.sh
     && echo '' > setup_environment.sh \
@@ -39,8 +38,8 @@ RUN apt-get update \
     && cp /rmats_build/rmats-turbo/rMATS_P/*.py ./rMATS_P \
     && mkdir rMATS_R \
     && cp /rmats_build/rmats-turbo/rMATS_R/*.R ./rMATS_R \
-    # Remove build dir
-    && rm -rf /rmats_build \
+    && cp /rmats_build/rmats-turbo/rmats ./ \
+    && ln -s /rmats/rmats /usr/local/bin/rmats \
     # Build STAR
     && mkdir /star_build \
     && cd /star_build \
@@ -51,6 +50,6 @@ RUN apt-get update \
     && cp STAR /usr/local/bin
 
 # Set defaults for running the image
-WORKDIR /rmats
-ENTRYPOINT ["python", "/rmats/rmats.py"]
-CMD ["--help"]
+#WORKDIR /rmats
+#ENTRYPOINT ["python", "/rmats/rmats.py"]
+#CMD ["--help"]
