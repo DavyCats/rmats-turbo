@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 
 COPY . /rmats_build/rmats-turbo
 
@@ -7,7 +7,7 @@ RUN apt-get update \
        ca-certificates \
        cmake \
        curl \
-       cython \
+       cython3 \
        g++ \
        gfortran \
        git \
@@ -15,9 +15,18 @@ RUN apt-get update \
        libgsl-dev \
        liblapack-dev \
        make \
-       python-dev \
+       python-is-python3 \
+       python3-dev \
        r-base \
+       r-cran-doparallel \
+       r-cran-dosnow \
+       r-cran-foreach \
+       r-cran-getopt \
+       r-cran-ggplot2 \
+       r-cran-iterators \
+       r-cran-mixtools \
        r-cran-nloptr \
+       r-cran-rcpp \
        zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
     # Use a build dir to be removed after artifacts are extracted
